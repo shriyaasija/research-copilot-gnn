@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #1a1a2e;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_2", "label": "graph neural", "shape": "dot", "size": 8, "title": "graph neural"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_392", "label": "Batch Virtual Adversarial Trai...", "shape": "dot", "size": 12, "title": "Batch Virtual Adversarial Training for Graph Convolutional Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_60", "label": "Visual Attention Network", "shape": "dot", "size": 12, "title": "Visual Attention Network"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_387", "label": "Convolution in Convolution for...", "shape": "dot", "size": 12, "title": "Convolution in Convolution for Network in Network"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_294", "label": "Representations of hom-Lie alg...", "shape": "dot", "size": 12, "title": "Representations of hom-Lie algebras"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_425", "label": "A Comprehensive Survey of Grap...", "shape": "dot", "size": 12, "title": "A Comprehensive Survey of Graph Embedding: Problems, Techniques and Applications"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_445", "label": "Knowledge Query Network: How K...", "shape": "dot", "size": 12, "title": "Knowledge Query Network: How Knowledge Interacts with Skills"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_12", "label": "neural architecture search", "shape": "dot", "size": 8, "title": "neural architecture search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_456", "label": "A Survey of Knowledge Graph Em...", "shape": "dot", "size": 12, "title": "A Survey of Knowledge Graph Embedding and Their Applications"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_193", "label": "Optimizing Deep Neural Network...", "shape": "dot", "size": 12, "title": "Optimizing Deep Neural Network Architecture: A Tabu Search Based Approach"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_21", "label": "graph convolutional networks", "shape": "dot", "size": 8, "title": "graph convolutional networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_162", "label": "Self-Supervised Learning of Co...", "shape": "dot", "size": 12, "title": "Self-Supervised Learning of Contextual Embeddings for Link Prediction in Heterogeneous Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_112", "label": "Graphs, Convolutions, and Neur...", "shape": "dot", "size": 12, "title": "Graphs, Convolutions, and Neural Networks: From Graph Filters to Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_126", "label": "PaGE-Link: Path-based Graph Ne...", "shape": "dot", "size": 12, "title": "PaGE-Link: Path-based Graph Neural Network Explanation for Heterogeneous Link Prediction"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_9", "label": "temporal link prediction", "shape": "dot", "size": 8, "title": "temporal link prediction"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_1", "label": "graph neural networks", "shape": "dot", "size": 8, "title": "graph neural networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_176", "label": "Multi-Objective Reinforced Evo...", "shape": "dot", "size": 12, "title": "Multi-Objective Reinforced Evolution in Mobile Neural Architecture Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_413", "label": "Knowledge Graph Embeddings and...", "shape": "dot", "size": 12, "title": "Knowledge Graph Embeddings and Explainable AI"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_23", "label": "knowledge graph embeddings", "shape": "dot", "size": 8, "title": "knowledge graph embeddings"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_114", "label": "Signed Graph Attention Network...", "shape": "dot", "size": 12, "title": "Signed Graph Attention Networks"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_17", "label": "supervised learning ssl", "shape": "dot", "size": 8, "title": "supervised learning ssl"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_182", "label": "Neural Architecture Transfer", "shape": "dot", "size": 12, "title": "Neural Architecture Transfer"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_262", "label": "Learning Adaptive Parallel Rea...", "shape": "dot", "size": 12, "title": "Learning Adaptive Parallel Reasoning with Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_185", "label": "Partial Connection Based on Ch...", "shape": "dot", "size": 12, "title": "Partial Connection Based on Channel Attention for Differentiable Neural Architecture Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_53", "label": "A Review on Neural Network Mod...", "shape": "dot", "size": 12, "title": "A Review on Neural Network Models of Schizophrenia and Autism Spectrum Disorder"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_14", "label": "large language models", "shape": "dot", "size": 8, "title": "large language models"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_3", "label": "language models llms", "shape": "dot", "size": 8, "title": "language models llms"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_46", "label": "GraphSMOTE: Imbalanced Node Cl...", "shape": "dot", "size": 12, "title": "GraphSMOTE: Imbalanced Node Classification on Graphs with Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_31", "label": "DEMO-Net: Degree-specific Grap...", "shape": "dot", "size": 12, "title": "DEMO-Net: Degree-specific Graph Neural Networks for Node and Graph Classification"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_250", "label": "WizardLM: Empowering large pre...", "shape": "dot", "size": 12, "title": "WizardLM: Empowering large pre-trained language models to follow complex instructions"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_14", "label": "Fast and Deep Graph Neural Net...", "shape": "dot", "size": 12, "title": "Fast and Deep Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_396", "label": "StegNet: Mega Image Steganogra...", "shape": "dot", "size": 12, "title": "StegNet: Mega Image Steganography Capacity with Deep Convolutional Network"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_130", "label": "An Evolutionary Algorithm Appr...", "shape": "dot", "size": 12, "title": "An Evolutionary Algorithm Approach to Link Prediction in Dynamic Social Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_170", "label": "DAG-GNN: DAG Structure Learnin...", "shape": "dot", "size": 12, "title": "DAG-GNN: DAG Structure Learning with Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_181", "label": "Towards Non-I.I.D. and Invisib...", "shape": "dot", "size": 12, "title": "Towards Non-I.I.D. and Invisible Data with FedNAS: Federated Deep Learning via Neural Architecture Search"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_13", "label": "architecture search nas", "shape": "dot", "size": 8, "title": "architecture search nas"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_22", "label": "knowledge graph embedding", "shape": "dot", "size": 8, "title": "knowledge graph embedding"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_216", "label": "AlphaX: eXploring Neural Archi...", "shape": "dot", "size": 12, "title": "AlphaX: eXploring Neural Architectures with Deep Neural Networks and Monte Carlo Tree Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_373", "label": "Contrastive and Generative Gra...", "shape": "dot", "size": 12, "title": "Contrastive and Generative Graph Convolutional Networks for Graph-based Semi-Supervised Learning"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_275", "label": "Stop Overthinking: A Survey on...", "shape": "dot", "size": 12, "title": "Stop Overthinking: A Survey on Efficient Reasoning for Large Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_51", "label": "Node Classification in Social ...", "shape": "dot", "size": 12, "title": "Node Classification in Social Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_224", "label": "Insights into DeepSeek-V3: Sca...", "shape": "dot", "size": 12, "title": "Insights into DeepSeek-V3: Scaling Challenges and Reflections on Hardware for AI Architectures"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_218", "label": "Random Search and Reproducibil...", "shape": "dot", "size": 12, "title": "Random Search and Reproducibility for Neural Architecture Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_252", "label": "PB-LLM: Partially Binarized La...", "shape": "dot", "size": 12, "title": "PB-LLM: Partially Binarized Large Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_391", "label": "Interpolation Consistency Trai...", "shape": "dot", "size": 12, "title": "Interpolation Consistency Training for Semi-Supervised Learning"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_155", "label": "CI-GNN: A Granger Causality-In...", "shape": "dot", "size": 12, "title": "CI-GNN: A Granger Causality-Inspired Graph Neural Network for Interpretable Brain Network-Based Psychiatric Diagnosis"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_8", "label": "link prediction node", "shape": "dot", "size": 8, "title": "link prediction node"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_284", "label": "GraphLLM: Boosting Graph Reaso...", "shape": "dot", "size": 12, "title": "GraphLLM: Boosting Graph Reasoning Ability of Large Language Model"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_418", "label": "Unifying Large Language Models...", "shape": "dot", "size": 12, "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_260", "label": "Jais and Jais-chat: Arabic-Cen...", "shape": "dot", "size": 12, "title": "Jais and Jais-chat: Arabic-Centric Foundation and Instruction-Tuned Open Generative Large Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_303", "label": "Learning Cross-Lingual Sentenc...", "shape": "dot", "size": 12, "title": "Learning Cross-Lingual Sentence Representations via a Multi-task Dual-Encoder Model"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_153", "label": "Knowledge Graph Embedding for ...", "shape": "dot", "size": 12, "title": "Knowledge Graph Embedding for Link Prediction: A Comparative Analysis"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_367", "label": "Graph Convolutional Networks u...", "shape": "dot", "size": 12, "title": "Graph Convolutional Networks using Heat Kernel for Semi-supervised Learning"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_219", "label": "Stochastic (Approximate) Proxi...", "shape": "dot", "size": 12, "title": "Stochastic (Approximate) Proximal Point Methods: Convergence, Optimality, and Adaptivity"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_40", "label": "Are Powerful Graph Neural Nets...", "shape": "dot", "size": 12, "title": "Are Powerful Graph Neural Nets Necessary? A Dissection on Graph Classification"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_16", "label": "semi supervised learning", "shape": "dot", "size": 8, "title": "semi supervised learning"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_5", "label": "Predicting concentration level...", "shape": "dot", "size": 12, "title": "Predicting concentration levels of air pollutants by transfer learning and recurrent neural network"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_6", "label": "natural language processing", "shape": "dot", "size": 8, "title": "natural language processing"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_455", "label": "Deep Reasoning with Knowledge ...", "shape": "dot", "size": 12, "title": "Deep Reasoning with Knowledge Graph for Social Relationship Understanding"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_209", "label": "Evaluating the Search Phase of...", "shape": "dot", "size": 12, "title": "Evaluating the Search Phase of Neural Architecture Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_375", "label": "Joint-bone Fusion Graph Convol...", "shape": "dot", "size": 12, "title": "Joint-bone Fusion Graph Convolutional Network for Semi-supervised Skeleton Action Recognition"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_10", "label": "knowledge graphs", "shape": "dot", "size": 8, "title": "knowledge graphs"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_122", "label": "From Stars to Subgraphs: Uplif...", "shape": "dot", "size": 12, "title": "From Stars to Subgraphs: Uplifting Any GNN with Local Structure Awareness"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_251", "label": "Graph Chain-of-Thought: Augmen...", "shape": "dot", "size": 12, "title": "Graph Chain-of-Thought: Augmenting Large Language Models by Reasoning on Graphs"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_23", "label": "Simplifying approach to Node C...", "shape": "dot", "size": 12, "title": "Simplifying approach to Node Classification in Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_427", "label": "A survey of embedding models o...", "shape": "dot", "size": 12, "title": "A survey of embedding models of entities and relationships for knowledge graph completion"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_192", "label": "Efficient Architecture Search ...", "shape": "dot", "size": 12, "title": "Efficient Architecture Search by Network Transformation"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_66", "label": "GraphFPN: Graph Feature Pyrami...", "shape": "dot", "size": 12, "title": "GraphFPN: Graph Feature Pyramid Network for Object Detection"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_5", "label": "semi supervised node", "shape": "dot", "size": 8, "title": "semi supervised node"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_123", "label": "Scalable Link Prediction in Dy...", "shape": "dot", "size": 12, "title": "Scalable Link Prediction in Dynamic Networks via Non-Negative Matrix Factorization"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_111", "label": "6G comprehensive intelligence:...", "shape": "dot", "size": 12, "title": "6G comprehensive intelligence: network operations and optimization based on Large Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_278", "label": "WizardCoder: Empowering Code L...", "shape": "dot", "size": 12, "title": "WizardCoder: Empowering Code Large Language Models with Evol-Instruct"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_267", "label": "A Survey on Multimodal Large L...", "shape": "dot", "size": 12, "title": "A Survey on Multimodal Large Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_232", "label": "Making Large Language Models B...", "shape": "dot", "size": 12, "title": "Making Large Language Models Better Reasoners with Alignment"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_200", "label": "A Study on Encodings for Neura...", "shape": "dot", "size": 12, "title": "A Study on Encodings for Neural Architecture Search"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_7", "label": "graph convolutional network", "shape": "dot", "size": 8, "title": "graph convolutional network"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_38", "label": "Transformers are Graph Neural ...", "shape": "dot", "size": 12, "title": "Transformers are Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_134", "label": "Neo-GNNs: Neighborhood Overlap...", "shape": "dot", "size": 12, "title": "Neo-GNNs: Neighborhood Overlap-aware Graph Neural Networks for Link Prediction"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_364", "label": "Semi-Supervised Classification...", "shape": "dot", "size": 12, "title": "Semi-Supervised Classification with Graph Convolutional Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_374", "label": "FreeMatch: Self-adaptive Thres...", "shape": "dot", "size": 12, "title": "FreeMatch: Self-adaptive Thresholding for Semi-supervised Learning"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_154", "label": "Modeling Dynamic Heterogeneous...", "shape": "dot", "size": 12, "title": "Modeling Dynamic Heterogeneous Network for Link Prediction using Hierarchical Attention with Temporal RNN"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_226", "label": "Searching for Accurate Binary ...", "shape": "dot", "size": 12, "title": "Searching for Accurate Binary Neural Architectures"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_19", "label": "learning graph structured", "shape": "dot", "size": 8, "title": "learning graph structured"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_85", "label": "MAttNet: Modular Attention Net...", "shape": "dot", "size": 12, "title": "MAttNet: Modular Attention Network for Referring Expression Comprehension"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_212", "label": "Beam Search Strategies for Neu...", "shape": "dot", "size": 12, "title": "Beam Search Strategies for Neural Machine Translation"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_215", "label": "Neural Architecture Search wit...", "shape": "dot", "size": 12, "title": "Neural Architecture Search with Bayesian Optimisation and Optimal Transport"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_207", "label": "BANANAS: Bayesian Optimization...", "shape": "dot", "size": 12, "title": "BANANAS: Bayesian Optimization with Neural Architectures for Neural Architecture Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_151", "label": "SHINE: Signed Heterogeneous In...", "shape": "dot", "size": 12, "title": "SHINE: Signed Heterogeneous Information Network Embedding for Sentiment Link Prediction"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_41", "label": "On Node Features for Graph Neu...", "shape": "dot", "size": 12, "title": "On Node Features for Graph Neural Networks"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_277", "label": "Perception, Reason, Think, and...", "shape": "dot", "size": 12, "title": "Perception, Reason, Think, and Plan: A Survey on Large Multimodal Reasoning Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_246", "label": "From System 1 to System 2: A S...", "shape": "dot", "size": 12, "title": "From System 1 to System 2: A Survey of Reasoning Large Language Models"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_406", "label": "SelfMatch: Combining Contrasti...", "shape": "dot", "size": 12, "title": "SelfMatch: Combining Contrastive Self-Supervision and Consistency for Semi-Supervised Learning"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_52", "label": "Rule Extraction Algorithm for ...", "shape": "dot", "size": 12, "title": "Rule Extraction Algorithm for Deep Neural Networks: A Review"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_353", "label": "Towards Label-efficient Automa...", "shape": "dot", "size": 12, "title": "Towards Label-efficient Automatic Diagnosis and Analysis: A Comprehensive Survey of Advanced Deep Learning-based Weakly-supervised, Semi-supervised and Self-supervised Techniques in Histopathological Image Analysis"}, {"color": "#AFA9EC", "font": {"color": "white"}, "id": "concept_20", "label": "semi", "shape": "dot", "size": 8, "title": "semi"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_217", "label": "An efficient and easy-to-exten...", "shape": "dot", "size": 12, "title": "An efficient and easy-to-extend Matlab code of the Moving Morphable Component (MMC) method for three-dimensional topology optimization"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_199", "label": "A Survey on Evolutionary Neura...", "shape": "dot", "size": 12, "title": "A Survey on Evolutionary Neural Architecture Search"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_247", "label": "Understanding Reasoning in Thi...", "shape": "dot", "size": 12, "title": "Understanding Reasoning in Thinking Language Models via Steering Vectors"}, {"color": "#5DCAA5", "font": {"color": "white"}, "id": "paper_286", "label": "LogicVista: Multimodal LLM Log...", "shape": "dot", "size": 12, "title": "LogicVista: Multimodal LLM Logical Reasoning Benchmark in Visual Contexts"}]);
+                  edges = new vis.DataSet([{"from": "paper_23", "to": "paper_364"}, {"from": "paper_23", "to": "paper_51"}, {"from": "paper_23", "to": "concept_1"}, {"from": "paper_31", "to": "paper_364"}, {"from": "paper_38", "to": "concept_6"}, {"from": "paper_40", "to": "paper_364"}, {"from": "paper_41", "to": "concept_2"}, {"from": "paper_46", "to": "paper_364"}, {"from": "paper_66", "to": "paper_364"}, {"from": "paper_112", "to": "paper_364"}, {"from": "paper_112", "to": "concept_1"}, {"from": "paper_114", "to": "paper_364"}, {"from": "paper_114", "to": "concept_8"}, {"from": "paper_122", "to": "paper_364"}, {"from": "paper_123", "to": "concept_9"}, {"from": "paper_134", "to": "paper_364"}, {"from": "paper_153", "to": "paper_425"}, {"from": "paper_153", "to": "paper_427"}, {"from": "paper_153", "to": "concept_10"}, {"from": "paper_154", "to": "paper_425"}, {"from": "paper_154", "to": "paper_364"}, {"from": "paper_154", "to": "concept_8"}, {"from": "paper_155", "to": "paper_53"}, {"from": "paper_155", "to": "paper_364"}, {"from": "paper_162", "to": "paper_364"}, {"from": "paper_170", "to": "paper_364"}, {"from": "paper_181", "to": "concept_13"}, {"from": "paper_182", "to": "paper_209"}, {"from": "paper_182", "to": "paper_218"}, {"from": "paper_182", "to": "concept_12"}, {"from": "paper_185", "to": "concept_12"}, {"from": "paper_199", "to": "paper_226"}, {"from": "paper_199", "to": "paper_209"}, {"from": "paper_199", "to": "paper_176"}, {"from": "paper_199", "to": "concept_12"}, {"from": "paper_199", "to": "concept_13"}, {"from": "paper_200", "to": "paper_207"}, {"from": "paper_200", "to": "paper_218"}, {"from": "paper_200", "to": "paper_215"}, {"from": "paper_200", "to": "concept_12"}, {"from": "paper_207", "to": "paper_216"}, {"from": "paper_207", "to": "paper_209"}, {"from": "paper_207", "to": "paper_218"}, {"from": "paper_207", "to": "paper_215"}, {"from": "paper_207", "to": "concept_12"}, {"from": "paper_209", "to": "paper_216"}, {"from": "paper_209", "to": "paper_218"}, {"from": "paper_209", "to": "paper_215"}, {"from": "paper_209", "to": "concept_12"}, {"from": "paper_215", "to": "concept_12"}, {"from": "paper_216", "to": "concept_13"}, {"from": "paper_218", "to": "paper_215"}, {"from": "paper_218", "to": "concept_12"}, {"from": "paper_224", "to": "concept_14"}, {"from": "paper_232", "to": "concept_14"}, {"from": "paper_251", "to": "concept_14"}, {"from": "paper_252", "to": "concept_14"}, {"from": "paper_275", "to": "concept_3"}, {"from": "paper_364", "to": "concept_16"}, {"from": "paper_364", "to": "concept_19"}, {"from": "paper_364", "to": "concept_20"}, {"from": "paper_367", "to": "paper_364"}, {"from": "paper_367", "to": "concept_16"}, {"from": "paper_367", "to": "concept_19"}, {"from": "paper_373", "to": "paper_364"}, {"from": "paper_373", "to": "concept_17"}, {"from": "paper_373", "to": "concept_21"}, {"from": "paper_374", "to": "paper_391"}, {"from": "paper_374", "to": "concept_16"}, {"from": "paper_375", "to": "concept_7"}, {"from": "paper_392", "to": "paper_364"}, {"from": "paper_392", "to": "concept_5"}, {"from": "paper_392", "to": "concept_21"}, {"from": "paper_406", "to": "paper_391"}, {"from": "paper_413", "to": "concept_23"}, {"from": "paper_418", "to": "concept_3"}, {"from": "paper_418", "to": "concept_6"}, {"from": "paper_425", "to": "paper_364"}, {"from": "paper_427", "to": "paper_364"}, {"from": "paper_427", "to": "concept_6"}, {"from": "paper_456", "to": "paper_413"}, {"from": "paper_456", "to": "paper_153"}, {"from": "paper_456", "to": "concept_22"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.2,
+            "damping": 0.09,
+            "nodeDistance": 120,
+            "springConstant": 0.05,
+            "springLength": 100
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
