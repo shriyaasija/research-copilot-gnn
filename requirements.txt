@@ -1,32 +1,12 @@
-# PDF processing
-pdfminer.six
-pymupdf
-
-# NLP
-spacy
-keybert
-sentence-transformers
-
-# Graph
-networkx
-torch>=2.2.0
+fastapi
+uvicorn[standard]
+torch
 torch-geometric
-dgl
-
-# Data & Math
+sentence-transformers
+networkx
 numpy
-pandas
-scikit-learn
-
-# Visualization
-matplotlib
-seaborn
-pyvis
-
-# Web UI
-gradio
-
-# Utilities
-tqdm
+groq
 python-dotenv
-jupyter
+pydantic
+pytest
+httpx
